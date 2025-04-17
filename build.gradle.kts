@@ -4,6 +4,7 @@ plugins {
 	id("org.springframework.boot") version "3.4.4"
 	id("io.spring.dependency-management") version "1.1.7"
 	kotlin("plugin.jpa") version "1.9.25"
+	kotlin("kapt") version "1.9.25"
 }
 
 group = "kr.flab"
@@ -25,6 +26,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+	// QueryDSL
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -46,4 +52,9 @@ allOpen {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+// Configure kapt for QueryDSL
+kotlin.sourceSets.main {
+    kotlin.srcDir("$buildDir/generated/source/kapt/main")
 }
